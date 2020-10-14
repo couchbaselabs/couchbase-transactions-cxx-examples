@@ -1,9 +1,9 @@
 #include <iostream>
+#include <random>
 #include <string>
 
 #include <couchbase/client/cluster.hxx>
 #include <couchbase/transactions.hxx>
-#include <couchbase/transactions/uid_generator.hxx>
 
 using namespace std;
 using namespace couchbase;
@@ -137,6 +137,14 @@ class GameServer
     }
 };
 
+std::string
+next_uid()
+{
+    static thread_local mt19937 gen{ random_device{}() };
+    uniform_int_distribution<uint64_t> dis;
+    return to_string(dis(gen));
+}
+
 int
 main(int argc, const char* argv[])
 {
@@ -151,10 +159,10 @@ main(int argc, const char* argv[])
     auto collection = bucket->default_collection();
 
     string player_id = "player_data";
-    Player player_data{ 14248, 23832, "player", 141, true, "Jane", transactions::uid_generator::next() };
+    Player player_data{ 14248, 23832, "player", 141, true, "Jane", next_uid() };
 
     string monster_id = "a_grue";
-    Monster monster_data{ 91, 4000, 0.19239324085462631, "monster", "Grue", transactions::uid_generator::next() };
+    Monster monster_data{ 91, 4000, 0.19239324085462631, "monster", "Grue", next_uid() };
 
     collection->upsert(player_id, player_data);
     cout << "Upserted sample player document: " << player_id << endl;
@@ -169,7 +177,7 @@ main(int argc, const char* argv[])
     bool monster_exists = true;
     while (monster_exists) {
         cout << "Monster exists -- lets hit it!" << endl;
-        game_server.player_hits_monster(transactions::uid_generator::next(), rand() % 8000, player_id, monster_id);
+        game_server.player_hits_monster(next_uid(), rand() % 8000, player_id, monster_id);
         auto result = collection->get(monster_id);
         monster_exists = result.is_success();
     }
