@@ -17,7 +17,7 @@ You will need the transactions library -- see [docs](https://docs.couchbase.com/
 Then, clone this library (if you haven't already), create a build directory and build...
 
 ```
-git clone git://github.com/couchbaselabs/couchbase-transactions-cxx-examples.git
+git clone git@github.com:couchbaselabs/couchbase-transactions-cxx-examples.git
 cd couchbase-transactions-cxx-examples/game/
 mkdir build && cd build
 cmake ../
