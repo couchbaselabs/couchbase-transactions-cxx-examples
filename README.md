@@ -1,8 +1,9 @@
 # Couchbase Distributed Transactions Examples for C++
 
 ## Game Example
-### This example is based on the Game Simulation sample bucket provided with Couchbase.  However
-you will not need to install the sample bucket to run this.
+
+This example is based on the Game Simulation sample bucket provided with Couchbase.
+You will not need to install the sample bucket to run this.
 
 There are two entities, Player and Monster.  To keep things simple, we just create one of each
 and have the player deal damage to the monster until it runs out of hit points.  Each time the
